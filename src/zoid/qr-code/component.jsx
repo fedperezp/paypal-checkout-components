@@ -17,6 +17,7 @@ const CLASS = {
 
 type QRCodeProps = {|
     qrPath : string,
+    clientID : string,
     cspNonce : ?string
 |};
 
@@ -26,7 +27,7 @@ export function getQRCodeComponent() : QRCodeComponent {
     return inlineMemoize(getQRCodeComponent, () => {
         return create({
             tag:        'paypal-qr-modal',
-            url:        ({ props }) => `${ getPayPalDomain() }${ __PAYPAL_CHECKOUT__.__URI__.__QRCODE__ }?${ props.qrPath }`,
+            url:        ({ props }) => `${ getPayPalDomain() }${ __PAYPAL_CHECKOUT__.__URI__.__QRCODE__ }?${ props.qrPath }&${ props.clientID }`,
             domain:     getPayPalDomainRegex(),
             dimensions: {
                 width:  '100%',
@@ -77,6 +78,11 @@ export function getQRCodeComponent() : QRCodeComponent {
                     type:       'string',
                     queryParam: true,
                     required:   true
+                },
+                clientID: {
+                    type:       'string',
+                    queryParam: true,
+                    required:   false
                 },
                 cspNonce: {
                     type:       'string',
